@@ -98,12 +98,12 @@ def doOnePing(destAddr, timeout):
 
 def ping(host, timeout=1):
     dest = gethostbyname(host)
-    print("Pinging " + dest + " using Python:")
-    print("")
+    # print("Pinging " + dest + " using Python:")
+    # print("")
     # Send ping requests to a server separated by approximately one second
     while 1:
         delay = doOnePing(dest, timeout)
-        print(delay)
+        # print(delay)
         time.sleep(1)  # one second
     return delay
 
