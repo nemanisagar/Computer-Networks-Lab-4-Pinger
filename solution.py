@@ -56,6 +56,7 @@ def receiveOnePing(mySocket, ID, timeout, destAddr):
         if icmpType !=8 and packetID == ID:
             bytesInDouble = struct.calcsize("d")
             timeSent = struct.unpack("d", recPacket[28:28 + bytesInDouble])[0]
+            return timeReceived - timeSent
 
         # Fill in end
         timeLeft = timeLeft - howLongInSelect
@@ -113,19 +114,19 @@ def ping(host, timeout=1):
     # create empty array
     empty_array = []
 
-    packet_min = min(empty_array) * 1000
-    packet_avg = (sum(empty_array) / 4) * 1000
-    packet_max = max(empty_array) * 1000
-    stdev_var = statistics.stdev(empty_array) * 1000
-
-    vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)), str(round(packet_max, 2)), str(round(stdev_var, 2))]
-
     # Send ping requests to a server separated by approximately one second
     for i in range(0, 4):
         delay = doOnePing(dest, timeout)
         # print(delay)
         time.sleep(1)  # one second
         empty_array.append(delay)
+
+    packet_min = min(empty_array) * 1000
+    packet_avg = (sum(empty_array) / 4) * 1000
+    packet_max = max(empty_array) * 1000
+    stdev_var = statistics.stdev(empty_array) * 1000
+
+    vars = [str(round(packet_min, 2)), str(round(packet_avg, 2)), str(round(packet_max, 2)), str(round(stdev_var, 2))]
 
     return vars
 
